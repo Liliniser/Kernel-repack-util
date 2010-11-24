@@ -72,7 +72,7 @@ fi
 # find start of gziped kernel object in the zImage file:
 #=======================================================
 
-pos=`grep -P -a -b --only-matching '\x1F\x8B\x08' $zImage | cut -f 1 -d : | grep '1'`
+pos=`grep -P -a -b --only-matching '\x1F\x8B\x08' $zImage | cut -f 1 -d : | grep '1' | awk '(NR==1)'`
 echo "##### 01.  Extracting kernel  from $zImage (start = $pos)"
 dd if=$zImage bs=1 skip=$pos | gunzip > $Image_here
 
