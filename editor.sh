@@ -116,7 +116,7 @@ franksize=`ls -l out/franken.img | awk '{print $5}'`
 echo "##### 08. Merging [head+ramdisk] + padding + tail"
 if [ $franksize -lt $end ]; then
 	tempnum=$((end - franksize))
-	dd if=resources/blankfile bs=1 count=$tempnum of=out/padding
+	dd if=/dev/zero bs=1 count=$tempnum of=out/padding
 	cat out/padding out/tail.img > out/newtail.img
 	cat out/franken.img out/newtail.img > out/new_Image
 else
