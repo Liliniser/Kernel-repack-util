@@ -3,6 +3,25 @@
 # see README for usage
 #################################################################################
 
+# parse command line options
+while getopts "s:d:r:c:" opt
+do
+	case "$opt" in
+		s) source_zImage=`readlink -f "$OPTARG"`;;
+		d) dest_zImage=`readlink -f "$OPTARG"`;;
+		r) new_ramdisk=`readlink -f "$OPTARG"`;;
+		c) compression="$OPTARG";;
+	esac
+done
+
+
+i_am=`readlink -f $0`
+cur_space=`dirname $i_am`
+determiner=0
+Image_here="./out/Image"
+
+cd $cur_space
+
 if ! [ -f config/compiler.sh ]; then
 	echo "COMPILER=/opt/toolchains/arm-2009q3/bin/arm-none-linux-gnueabi" > config/compiler.sh
 fi
@@ -18,27 +37,10 @@ if [ $COMPILER-gcc > /dev/null = 127 ]  ; then
 fi
 
 
-# parse command line options
-while getopts "s:d:r:c:" opt
-do
-	case "$opt" in
-		s) source_zImage=`readlink -f "$OPTARG"`;;
-		d) dest_zImage=`readlink -f "$OPTARG"`;;
-		r) new_ramdisk=`readlink -f "$OPTARG"`;;
-		c) compression="$OPTARG";;
-	esac
-done
-
-
-
-cur_space=$PWD
-determiner=0
-Image_here="./out/Image"
-
-if test -d out ; then
+if [ -d out ] ; then
 	rm -r out && mkdir out
 else
-	mkdir out
+	mkdir -p out
 fi
 
 echo "##### My name is $0 #####"
