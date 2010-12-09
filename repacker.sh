@@ -133,7 +133,7 @@ echo "##### 03. The size of the Image is $filesize"
 
 # Split the Image #1 ->  head.img
 echo "##### 04. Making a head.img ( from 0 ~ $start )"
-dd if=$Image_here bs=1 count=$start of=out/head.img
+dd if=$Image_here bs=$start count=1 of=out/head.img
 
 # Split the Image #2 ->  tail.img
 echo "##### 05. Making a tail.img ( from $end ~ $filesize )"
