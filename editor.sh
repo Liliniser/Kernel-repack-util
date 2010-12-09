@@ -3,8 +3,16 @@
 # see README for usage
 #################################################################################
 
-COMPILER=/home/liliniser/ToolChains/arm-2009q3/bin/arm-none-linux-gnueabi
-if test ! $COMPILER-gcc > /dev/null ; then
+if ! [ -f config/compiler.sh ]; then
+	echo "COMPILER=/opt/toolchains/arm-2009q3/bin/arm-none-linux-gnueabi" > config/compiler.sh
+fi
+
+# load any config files
+for x in config/*.sh; do
+	. "$x"
+done
+
+if [ $COMPILER-gcc > /dev/null = 127 ]  ; then
 	echo "****** You must let me know where the compiler is! ******"
 	exit
 fi
@@ -22,7 +30,7 @@ else
 fi
 
 echo "##### My name is $0 #####"
-if [ $1 = "" ]; then
+if [ "$1" = "" ]; then
 	echo "****** You must let me know where the zImage file is ******"
 	exit
 else
