@@ -1,15 +1,6 @@
 #!/bin/sh
 #################################################################################
-# usage : ./editor.sh [kernel] [initramfs_directory / file] [gz/lzma/""]				                        	#
-# example : ./editor.sh  /home/zero/Desktop/test/zImage  /home/zero/Desktop/ramdisk-dir lzma		#
-# 1. [kernel] : the place where your zImage file is												#
-# 2. [initramfs_directory / file] : the place where your initramfs folder or a compressed file of the initramfs is	#
-#     (when you choose a compressed file of the initramfs, you don't need [gz or lzma], just leave it			#
-# 3. [gz/lzma/""] : When you choose a directory of the initramfs, you need to specify the way how you 		#
-#	want to compress your initramfs directory. ("" means just leave it!)							#
-# FROYO : supports both lzma and gzip compressions											#
-# ECLAIR : only supports gzip compression  												#
-# you should let this editor where your cross-compiler is                                     						#
+# see README for usage
 #################################################################################
 
 COMPILER=/home/liliniser/ToolChains/arm-2009q3/bin/arm-none-linux-gnueabi
