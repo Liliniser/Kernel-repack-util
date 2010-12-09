@@ -4,14 +4,14 @@ Can not guarantee if this will work on every zImages.
 
 
 usage :
-editor.sh \
+repacker.sh \
 	-s [source kernel] \
 	-d [dest kernel] \
 	-r [initramfs_directory / file] \
 	-c [gz/lzma/""]
 
 example :
-editor.sh  \
+repacker.sh  \
 	-s /home/zero/Desktop/test/zImage \
 	-d /home/zero/Desktop/test/new_zImage \
 	-r /home/zero/Desktop/ramdisk-dir \
