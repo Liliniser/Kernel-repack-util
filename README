@@ -8,7 +8,7 @@ repacker.sh \
 	-s [source kernel] \
 	-d [dest kernel] \
 	-r [initramfs_directory / file] \
-	-c [gz/lzma/""]
+	-c [gzip/lzma/""]
 
 example :
 repacker.sh  \
@@ -20,7 +20,7 @@ repacker.sh  \
 1. [source kernel] : the place where your source zImage file is
 2. [dest kernel] : the place where your destination zImage file will be
 3. [initramfs_directory / file] : the place where your initramfs folder or a compressed file of the initramfs is
-   (when you choose a compressed file of the initramfs, you don't need [gz or lzma], just leave it
+   (when you choose a compressed file of the initramfs, you don't need [gzip or lzma], just leave it
 4. [gz/lzma/""] : When you choose a directory of the initramfs, you need to specify the way how you
    want to compress your initramfs directory. ("" means just leave it!)
 

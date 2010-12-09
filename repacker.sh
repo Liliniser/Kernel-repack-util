@@ -68,7 +68,7 @@ elif [ -f $new_ramdisk ] ; then
 	ramdisk_type="file"
 fi
 
-if [ "$compression" = "gz" ]; then
+if [ "$compression" = "gzip" ]; then
 	echo "##### The ramdisk is $new_ramdisk (will be gzipped) #####"
 	cd $new_ramdisk
 	find . -print0 | cpio -o0 -H newc | gzip -9 -f > $cur_space/out/initramfs_data.cpio.gz
@@ -78,7 +78,7 @@ elif [  "$compression" = "lzma" ]; then
 	echo "##### The ramdisk is $new_ramdisk (will be lzma'ed) #####"
 	bash resources/Linux/scripts/gen_initramfs_list.sh -o out/initramfs_data.cpio.lzma  -u "squash"  -g "squash" $new_ramdisk
 	new_ramdisk=out/initramfs_data.cpio.lzma
-elif [  "$compression" = "" ] ; then
+else
 	if [ "$ramdisk_type" = "file" ] ; then
 		echo "##### The ramdisk is $new_ramdisk (already compressed) #####"
 		new_ramdisk=$new_ramdisk
@@ -96,6 +96,7 @@ pos=`grep -P -a -b --only-matching '\x1F\x8B\x08' $source_zImage | cut -f 1 -d :
 echo "##### 01.  Extracting kernel  from $zImage (start = $pos)"
 dd if=$source_zImage bs=1 skip=$pos | gunzip > $Image_here
 
+
 #==========================================================================
 # find start and end of the "cpio" initramfs  inside the kernel object:
 # ASCII cpio header starts with '070701'
@@ -107,6 +108,7 @@ end=`grep -a -b --only-matching 'TRAILER!!!' $Image_here | head -1 | cut -f 1 -d
 end=$((end + 10))
 count=$((end - start))
 
+
 if [ $count -lt $determiner ]; then
 	echo "##### ERROR : Couldn't match start/end of the initramfs ."
 	exit 2
@@ -114,7 +116,10 @@ fi
 
 # Check the new ramdisk's size
 ramdsize=`ls -l $new_ramdisk | awk '{print $5}'`
+
 echo "##### 02. The size of the new ramdisk is = $ramdsize / original = $count"
+
+
 if [ $ramdsize -gt $count ]; then
 	echo "****** Your initramfs needs to be smaller than the present!! ******"
 	exit 2
