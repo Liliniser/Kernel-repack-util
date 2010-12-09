@@ -74,7 +74,7 @@ if [ "$compression" = "gz" ]; then
 	cd $cur_space
 elif [  "$compression" = "lzma" ]; then
 	echo "##### The ramdisk is $new_ramdisk (will be lzma'ed) #####"
-	bash resources/2.6.29/scripts/gen_initramfs_list.sh -o out/initramfs_data.cpio.lzma  -u "squash"  -g "squash"  $new_ramdisk
+	bash resources/Linux/scripts/gen_initramfs_list.sh -o out/initramfs_data.cpio.lzma  -u "squash"  -g "squash" $new_ramdisk
 	new_ramdisk=out/initramfs_data.cpio.lzma
 elif [  "$compression" = "" ] ; then
 	if [ "$ramdisk_type" = "file" ] ; then
@@ -158,7 +158,7 @@ echo "#=========================================="
 echo "##### Now we are rebuilding the zImage #####"
 echo "#=========================================="
 
-cd resources/2.6.29
+cd resources/Linux
 cp ../../out/new_Image arch/arm/boot/Image
 
 #1. Image -> piggy.gz
