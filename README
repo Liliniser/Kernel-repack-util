@@ -1,7 +1,11 @@
 Kernel repacker made by Liliniser / dkcldark
+some additions by supercurio
 
 Can not guarantee if this will work on every zImages.
 
+
+repacker:
+_________
 
 usage :
 repacker.sh \
@@ -29,3 +33,12 @@ ECLAIR : only supports gzip compression
 
 If your cross-compiler prefix is not "/opt/toolchains/arm-2009q3/bin/arm-none-linux-gnueabi-"
 write a custom COMPILER=/your/path/bin/arm-foo-linux-barabi into config/compiler.sh
+
+
+
+extracter only:
+_______________
+
+extracter.sh \
+	-s [source zImage]
+	-d [destination ramdisk directory]
