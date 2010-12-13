@@ -18,7 +18,7 @@ example :
 repacker.sh  \
 	-s /home/zero/Desktop/test/zImage \
 	-d /home/zero/Desktop/test/new_zImage \
-	-r /home/zero/Desktop/ramdisk-dir \
+	-r /home/zero/Desktop/initramfs-dir \
 	-c lzma
 
 1. [source kernel] : the place where your source zImage file is
@@ -41,4 +41,4 @@ _______________
 
 extracter.sh \
 	-s [source zImage]
-	-d [destination ramdisk directory]
+	-d [destination initramfs directory]

@@ -9,7 +9,7 @@ do
 	case "$opt" in
 		s) source_zImage=`readlink -f "$OPTARG"`;;
 		d) dest_zImage=`readlink -f "$OPTARG"`;;
-		r) new_ramdisk=`readlink -f "$OPTARG"`;;
+		r) new_initramfs=`readlink -f "$OPTARG"`;;
 		c) compression="$OPTARG";;
 	esac
 done
@@ -60,38 +60,38 @@ else
 	echo "##### The destination zImage file is $dest_zImage #####"
 fi
 
-if [ "$new_ramdisk" = "" ]; then
-	echo "****** You must let me know where the ramdisk directory is ******"
+if [ "$new_initramfs" = "" ]; then
+	echo "****** You must let me know where the initramfs directory is ******"
 	exit 1
-elif [ -d $new_ramdisk ] ; then
-	echo "##### The directory of the ramdisk has been selected #####"
-elif [ -f $new_ramdisk ] ; then
-	echo "##### The compressed file of the ramdisk has been selected #####"
-	ramdisk_type="file"
+elif [ -d $new_initramfs ] ; then
+	echo "##### The directory of the initramfs has been selected #####"
+elif [ -f $new_initramfs ] ; then
+	echo "##### The compressed file of the initramfs has been selected #####"
+	initramfs_type="file"
 fi
 
 if [ "$compression" = "gzip" ]; then
-	echo "##### The ramdisk is $new_ramdisk (will be gzipped) #####"
-	cd $new_ramdisk
+	echo "##### The initramfs is $new_initramfs (will be gzipped) #####"
+	cd $new_initramfs
 	find . -print0 | cpio -o0 -H newc | gzip -9 -f > $cur_space/out/initramfs_data.cpio.gz
-	new_ramdisk=out/initramfs_data.cpio.gz
+	new_initramfs=out/initramfs_data.cpio.gz
 	cd $cur_space
 elif [  "$compression" = "lzma" ]; then
-	echo "##### The ramdisk is $new_ramdisk (will be lzma'ed) #####"
-	bash resources/Linux/scripts/gen_initramfs_list.sh -o out/initramfs_data.cpio.lzma  -u "squash"  -g "squash" $new_ramdisk
-	new_ramdisk=out/initramfs_data.cpio.lzma
+	echo "##### The initramfs is $new_initramfs (will be lzma'ed) #####"
+	bash resources/Linux/scripts/gen_initramfs_list.sh -o out/initramfs_data.cpio.lzma  -u "squash"  -g "squash" $new_initramfs
+	new_initramfs=out/initramfs_data.cpio.lzma
 else
-	if [ "$ramdisk_type" = "file" ] ; then
-		echo "##### The ramdisk is $new_ramdisk (already compressed) #####"
-		new_ramdisk=$new_ramdisk
+	if [ "$initramfs_type" = "file" ] ; then
+		echo "##### The initramfs is $new_initramfs (already compressed) #####"
+		new_initramfs=$new_initramfs
 	else
-		echo "****** You must let me know how you want to compress the ramdisk's directory ******"
+		echo "****** You must let me know how you want to compress the initramfs's directory ******"
 		exit 1
 	fi
 fi
 
 
-analyze_ramdisk
+analyze_initramfs
 
 
 if [ $count -lt $determiner ]; then
@@ -99,17 +99,17 @@ if [ $count -lt $determiner ]; then
 	exit 2
 fi
 
-# Check the new ramdisk's size
-ramdsize=`ls -l $new_ramdisk | awk '{print $5}'`
+# Check the new initramfs's size
+ramdsize=`ls -l $new_initramfs | awk '{print $5}'`
 
-echo "##### 02. The size of the new ramdisk is = $ramdsize / original = $count"
+echo "##### 02. The size of the new initramfs is = $ramdsize / original = $count"
 
 
 if [ $ramdsize -gt $count ]; then
 	echo "****** Your initramfs needs to be smaller than the present!! ******"
 	exit 2
 else
-	mv $new_ramdisk out/ramdisk.cpio
+	mv $new_initramfs out/initramfs.cpio
 fi
 
 # Check the Image's size
@@ -125,14 +125,14 @@ echo "##### 05. Making a tail.img ( from $end ~ $filesize )"
 dd if=$Image_here bs=1 skip=$end of=out/tail.img
 
 # FrankenStein is being made #1
-echo "##### 06. Merging head + ramdisk"
-cat out/head.img out/ramdisk.cpio > out/franken.img
+echo "##### 06. Merging head + initramfs"
+cat out/head.img out/initramfs.cpio > out/franken.img
 
-echo "##### 07. Checking the size of [head+ramdisk]"
+echo "##### 07. Checking the size of [head+initramfs]"
 franksize=`ls -l out/franken.img | awk '{print $5}'`
 
 # FrankenStein is being made #2
-echo "##### 08. Merging [head+ramdisk] + padding + tail"
+echo "##### 08. Merging [head+initramfs] + padding + tail"
 if [ $franksize -lt $end ]; then
 	tempnum=$((end - franksize))
 	dd if=/dev/zero bs=1 count=$tempnum of=out/padding

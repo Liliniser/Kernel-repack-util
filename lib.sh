@@ -1,6 +1,6 @@
 # repacker functions
 
-analyze_ramdisk()
+analyze_initramfs()
 {
 	#==============================================================
 	# find start of gziped kernel object in the source zImage file:
