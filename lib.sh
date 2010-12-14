@@ -7,8 +7,8 @@ analyze_initramfs()
 	#==============================================================
 
 	pos=`grep -P -a -b --only-matching '\x1F\x8B\x08' $source_zImage | cut -f 1 -d : | grep '1' | awk '(NR==1)'`
-	echo "##### 01.  Extracting kernel  from $zImage (start = $pos) to $Image_here"
-	dd if=$source_zImage bs=1 skip=$pos | gunzip > $Image_here
+	echo "##### 01.  Extracting kernel  from $source_zImage (start = $pos) to $Image_here"
+	dd if=$source_zImage bs=$pos skip=1 | gunzip > $Image_here
 
 
 	#==========================================================================
