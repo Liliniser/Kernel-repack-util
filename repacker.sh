@@ -122,7 +122,7 @@ dd if=$Image_here bs=$start count=1 of=out/head.img
 
 # Split the Image #2 ->  tail.img
 echo "##### 05. Making a tail.img ( from $end ~ $filesize )"
-dd if=$Image_here bs=1 skip=$end of=out/tail.img
+dd if=$Image_here bs=$end skip=1 of=out/tail.img
 
 # FrankenStein is being made #1
 echo "##### 06. Merging head + initramfs"
