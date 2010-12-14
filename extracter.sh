@@ -14,6 +14,7 @@ i_am=`readlink -f $0`
 cur_space=`dirname $i_am`
 Image_here=$cur_space'/out/Image'
 original_initramfs_image=$cur_space'/out/original.cpio'
+temp=$cur_space'/out/dd_cache'
 
 if [ ! -f "$source_zImage" ]; then
 	echo "****** You must specify a valid zImage file as input ******"
@@ -33,7 +34,11 @@ mkdir -p out
 analyze_initramfs
 
 echo "##### reading initramfs from the uncompressed Image file #####"
-dd if=$Image_here bs=1 skip=$start count=$count > $original_initramfs_image
+# original version
+# dd if=$Image_here bs=1 skip=$start count=$count > $original_initramfs_image
+# speed-optimized version
+dd if=$Image_here ibs=$start skip=1 of=$temp
+dd if=$temp bs=$count count=1 of=$original_initramfs_image
 
 rm -r $dest_initramfs_directory
 mkdir -p $dest_initramfs_directory || exit 1
