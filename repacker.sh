@@ -73,7 +73,7 @@ fi
 if [ "$compression" = "gzip" ]; then
 	echo "##### The initramfs is $new_initramfs (will be gzipped) #####"
 	cd $new_initramfs
-	find . -print0 | cpio -o0 -H newc | gzip -9 -f > $cur_space/out/initramfs_data.cpio.gz
+	find . -print0 | fakeroot cpio -o0 -H newc | gzip -9 -f > $cur_space/out/initramfs_data.cpio.gz
 	new_initramfs=out/initramfs_data.cpio.gz
 	cd $cur_space
 elif [  "$compression" = "lzma" ]; then
