@@ -1,5 +1,44 @@
 Kernel repacker made by Liliniser / dkcldark
+some additions by supercurio
 
 Can not guarantee if this will work on every zImages.
 
-Please open the editor.sh file and read the first part.
+
+repacker:
+_________
+
+usage :
+repacker.sh \
+	-s [source kernel] \
+	-d [dest kernel] \
+	-r [initramfs_directory / file] \
+	-c [gzip/lzma/""]
+
+example :
+repacker.sh  \
+	-s /home/zero/Desktop/test/zImage \
+	-d /home/zero/Desktop/test/new_zImage \
+	-r /home/zero/Desktop/initramfs-dir \
+	-c lzma
+
+1. [source kernel] : the place where your source zImage file is
+2. [dest kernel] : the place where your destination zImage file will be
+3. [initramfs_directory / file] : the place where your initramfs folder or a compressed file of the initramfs is
+   (when you choose a compressed file of the initramfs, you don't need [gzip or lzma], just leave it
+4. [gz/lzma/""] : When you choose a directory of the initramfs, you need to specify the way how you
+   want to compress your initramfs directory. ("" means just leave it!)
+
+FROYO : supports both lzma and gzip compressions
+ECLAIR : only supports gzip compression
+
+If your cross-compiler prefix is not "/opt/toolchains/arm-2009q3/bin/arm-none-linux-gnueabi-"
+write a custom COMPILER=/your/path/bin/arm-foo-linux-barabi into config/compiler.sh
+
+
+
+extracter only:
+_______________
+
+extracter.sh \
+	-s [source zImage]
+	-d [destination initramfs directory]
